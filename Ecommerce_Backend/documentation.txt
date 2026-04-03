@@ -1,0 +1,135 @@
+step #1 : connect node.js and connect DB properly.
+Step #2 :Take a folder named database and inside it create a file named dbConnection.js. In this file take all the connection elements like mongoose. dbConnection part take inside a function for export it. Then import dbCollection in the main.js file. Be carefule about whether it is linked at the top part of the code.  
+
+step #3 : (dotenv) To keep the databaseconnection secret elements in more professonal way we can follow the following steps. 
+(run)  npm i dotenv
+make a file in the root named (.env)
+take require env with config in main.js file.
+in the file .env put:
+DB_USER_NAME = ecommerceapi
+DB_Password = .....
+DB_NAME = ......
+
+put in the connection url
+${process.env.DB_USER_NAME}
+${process.env.DB_Password}
+${process.env.DB_NAME}
+
+then use backtick in the connection code and then the light will become on. 
+
+2nd way to make dbConnection more professonal: 
+in the .env file write: 
+DB_URL = all connection code here and in the dbConnection file write    `${process.env.DB_URL}`
+
+Step #4: (API make)
+We have to make seperate route for a individual api. 
+Make a route in the root ==>> file index.js. 
+route>>index.js
+
+const express = require('express')
+const router = express.Router()
+const apiRoute = require('./api')
+const authRoute = require('./api/auth')
+
+router.use("/api/v1", apiRoute)
+router.use("/auth", authRoute)
+
+module.exports = router
+
+To make an api make a api folder under route. Make an index.js file under api folder
+route>>api>>index.js
+const express = require('express')
+const router = express.Router()
+const authRoute = require('./auth')
+const shopRoute = require('./shop')
+router.use(express.json())
+
+router.use("/auth", authRoute)
+router.use("/shop", shopRoute)
+
+module.exports = router
+
+route>>api>>auth.js
+
+const express = require("express");
+const signupController = require("../../controllers/signupController");
+const {otpController, resendOtpController} = require("../../controllers/otpController");
+const loginController = require("../../controllers/loginController");
+const router = express.Router();
+
+router.post("/signup", signupController);
+router.post("/otpVerify", otpController);
+router.post("/resendotp", resendOtpController);
+router.post("/login", loginController);
+
+module.exports = router;
+
+
+
+//to send file to the DB the following steps need to done-
+Step # 5: Make a folder in the root named controllers. under this folder make a file named signupController.js. import express and router and the make a function in the name of the file and export the file. connect the signup controller with auth.js.
+
+step #6: Create a moldel folder in the root and make a userSchema.js. Import mongoose, schema and then take const userSchema = new Schema({   }) then export it. take data head like (firstName, lastName, email, password, otp, expireOtp, isVerified,)
+firstName:{
+    type: String,
+    required: true,
+},
+
+in this way take all the data heading. 
+
+Step #7 : (email validation) email validation in javascript Stack overflow (take email validation code ) and take it in the signupController file e. take a folder named helpers=> take a file emailValidation.js. In this file take a function => function name is the file name. export the function. in this function write const emailpatter = give pattern from regex. under it give emailReg.test(email). also pass email as a parameter in the function too. 
+
+
+Step #8: go to the signupController and send data to the database. 
+step #9: Make a hash password. install bcrypt. => bcrypt.hash(password, 10, function(err, hash){
+    //store hash in your password DB 
+})
+
+step # 10: Make a duplicate email error using length. 
+step # 11: Make a require password error. 
+step # 12: Make otp option using ==>> crypto 
+step # 13: Make otp expire function ==>> const expireOtp = new Date(Date.now() + 10 * 60 * 1000) 
+step # 14: Make a controller nodeMailer ===>>> install  nodeMailer and cofig using helpers ==>> emailVarification
+step # 15: Make sure otp email is correct ==>> make otp controller. 
+step # 16: create resendOtpController function in the optController ===>> write otpController code
+step # 17: Create a loginController.js ==>> email.password required, email format valid, check whether existing user is in DB, verify existing user,  check hash password and make login successfull. 
+step # 18: Make sessor system using express.sesson.
+step # 19: Create dashboard route 
+stpe # 20: Make logout route using session destroy
+Image Upload:
+Step # 21: Installmulter, in product.js e require multer and uploads, make a folder in the root named uploads. In the product route in the middle put upload.single('image'), go to product Schema and put there image, type "String". Then go to the product controller and insert image in two places. 
+step # 22: Then go to the postman complete the form data in the body. See data without image. 
+step # 23: Go to product js from api ==>> Make disk storage from multer ==>> Split it.
+step # 24: Go to the product controller and update the image url = like //image : `http://localhost:3000/uploads/${req.file.filename}`
+step # 25: GO to search ==>> static image show in node.js ==>> express Doc place in root index.js ==>> rename the folder name.
+
+To make the file light we preseve the image in cloudinary. Only databas will have a string of the image.
+ Step # 27: To preseve the image in the clousinary make a file in the middleware named Cloudinary.js
+ Step # 28: Signup to the cloudinary and tick optamize, personal, developer, images, node.js
+ Step # 29: instll cloudanary and create a file named cloudanary.js in the middleware. go to the npm cloudanary and take require it. Go to the cloudanary and click logo and click get started. take the configuration code in the file. update the api key and secret key.  and from image and video Api>SKD's>Backend SKD's> node.js skd>
+ and put the below code and change the export 
+
+ const uploadImage = async (filename)=>{
+    const result  = await cloudinary.uploader.upload(filename)
+   console.log(result);
+   return result;
+}
+export the uploadImage file
+
+step # 30: To make the image location dynamic go to the Product Controller and write 
+    const imgPath = req.file.path
+    // console.log(imgPath);
+    const imgUrl = uploadImage(imgPath) 
+    
+    
+    Then change the image url like:     image: imgUrl.secure_url,
+
+Stpe # 31: In this stage image link still in the uploads folder and in DB and in Cloudanary. To remove the file from uploads we will go to the node fs unlinkSync. Here we put required in the cloudanary file and give fs.unlinkSync(filename). This will unlink the link form uploads. 
+
+
+
+
+
+
+if there is server dns problem use this in the root file in main.js as class no. 89
+require("node:dns/promises").setServers(["1.1.1.1", "8.8.8.8"])
