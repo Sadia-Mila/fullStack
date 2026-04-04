@@ -9,6 +9,7 @@ import DeleteCategory from "./components/pages/DeleteCategory";
 import CreateProduct from "./components/pages/CreateProduct";
 import ProductList from "./components/pages/ProductList";
 import Orders from "./components/pages/Orders";
+import Registration from "./components/pages/Registration";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
 
           <Route path="/orders" element={<Orders />} />
         </Route>
+          <Route path="/registration" element={<Registration/>} />
       </Routes>
     </>
   );
