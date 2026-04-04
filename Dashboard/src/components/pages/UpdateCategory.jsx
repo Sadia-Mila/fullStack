@@ -16,7 +16,7 @@ const UpdateCategory = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/v1/category/singleCategorylist/${id}`)
+      .get(`https://ecommerceapi-wpz8.onrender.com/api/v1/category/singleCategorylist/${id}`)
       .then((res) => {
         setUpdateCategoryName(res.data.data.name);
         setUpdateCategoryDescription(res.data.data.description);
@@ -28,7 +28,7 @@ const UpdateCategory = () => {
       name: updateCategoryName,
       description: updateCategoryDescription,
     }
-    axios.patch(`http://localhost:3000/api/v1/category/updatecategory/${id}`, formData)
+    axios.patch(`https://ecommerceapi-wpz8.onrender.com/api/v1/category/updatecategory/${id}`, formData)
     toast.success("Update Successfully")
     setTimeout(() => {
       navigate("/category/list")

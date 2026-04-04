@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:3000/api/v1/category/allcategorylist").then(
+    axios.get("https://ecommerceapi-wpz8.onrender.com/api/v1/category/allcategorylist").then(
       (res) => setCategories(res.data.data),
       // console.log(res.data.data)
     );
@@ -24,7 +24,7 @@ const CategoryList = () => {
   // console.log(categories);
 
   const handleCategoryListDelete =(id)=>{
-    axios.delete(`http://localhost:3000/api/v1/category/deletecategory/${id}`)
+    axios.delete(`https://ecommerceapi-wpz8.onrender.com/api/v1/category/deletecategory/${id}`)
     setCategories(categories.filter((item) => item._id !== id))
   }
 

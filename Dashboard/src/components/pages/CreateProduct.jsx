@@ -38,7 +38,7 @@ const CreateProduct = () => {
     formData.append("image", image);
 
     axios
-      .post("http://localhost:3000/api/v1/product/createproduct", formData)
+      .post("https://ecommerceapi-wpz8.onrender.com/api/v1/product/createproduct", formData)
       .then((res) => console.log(res));
 
     toast.success("Product Created Successfully!");
@@ -59,7 +59,7 @@ const CreateProduct = () => {
   //For selection Category
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/category/allcategorylist")
+      .get("https://ecommerceapi-wpz8.onrender.com/api/v1/category/allcategorylist")
       .then((res) => {
         setCategories(res.data.data);
         if(res.data.data.length > 0) {

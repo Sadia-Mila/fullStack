@@ -28,12 +28,12 @@ const Registration = () => {
     });
   };
   const handleRegBtn = () => {
-    axios.post("http://localhost:3000/api/v1/auth/signup", registrationData)
+    axios.post("https://ecommerceapi-wpz8.onrender.com/api/v1/auth/signup", registrationData)
     .then((data)=>{
       toast.success("Registration Done Successfully Now Verify Otp")
     })
     .catch((error)=>{
-      
+
     })
   };
   return (
