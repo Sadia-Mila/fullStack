@@ -10,6 +10,7 @@ import CreateProduct from "./components/pages/CreateProduct";
 import ProductList from "./components/pages/ProductList";
 import Orders from "./components/pages/Orders";
 import Registration from "./components/pages/Registration";
+import Login from "./components/pages/Login";
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
 
           <Route path="/orders" element={<Orders />} />
         </Route>
-          <Route path="/registration" element={<Registration/>} />
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );
