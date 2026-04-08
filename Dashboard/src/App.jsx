@@ -11,6 +11,7 @@ import ProductList from "./components/pages/ProductList";
 import Orders from "./components/pages/Orders";
 import Registration from "./components/pages/Registration";
 import Login from "./components/pages/Login";
+import UserList from "./components/pages/UserList";
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
             <Route path="list" element={<ProductList />} />
             {/* <Route path="update/:id" element={<UpdateCategory />} />
             <Route path="delete/:id" element={<DeleteCategory />} /> */}
+          </Route>
+          <Route path="/user">
+            <Route path="list" element={<UserList/>} />
+          
           </Route>
 
           <Route path="/orders" element={<Orders />} />

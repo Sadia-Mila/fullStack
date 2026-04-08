@@ -14,7 +14,9 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-      {/* OTP Modal */}
+{
+  /* OTP Modal */
+}
 import {
   Dialog,
   DialogContent,
@@ -25,15 +27,21 @@ import {
 } from "@/components/ui/dialog";
 import { Link, useNavigate } from "react-router-dom";
 
-      {/* OTP Modal */}
+{
+  /* OTP Modal */
+}
 
 const Registration = () => {
-         {/* OTP Modal */}
+  {
+    /* OTP Modal */
+  }
   const [openOtpModal, setOpenOtpModal] = useState(false);
-   const [otp, setOtp] = useState("")
-   const navigate = useNavigate()
+  const [otp, setOtp] = useState("");
+  const navigate = useNavigate();
+
   
-      {/* OTP Modal */}
+    /* OTP Modal */
+  
   const [registrationData, setRegistrationData] = useState({
     firstName: "",
     lastName: "",
@@ -46,50 +54,43 @@ const Registration = () => {
       [e.target.name]: e.target.value,
     });
   };
-  
 
   const handleRegBtn = () => {
     axios
       .post(
-        "https://ecommerceapi-wpz8.onrender.com/api/v1/auth/signup",
-        registrationData,
+        "http://localhost:3000/api/v1/auth/signup",
+        registrationData
       )
       .then((data) => {
-        console.log("Success");
-        
         toast.success("Registration Done Successfully. Now Verify Otp");
         setOtp({ ...otp, email: registrationData.email });
         setOpenOtpModal(true); // Open OTP modal
-        
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message || "Something went wrong");
+        toast.error("Someting is wrong");
       });
   };
   /*Otp Varification */
-  const handleOtpChange = (e) => {
-    setOtp({
-      ...otp,
-      [e.target.name]: e.target.value,
-    });
-  };
-   const handleVerifyOtp = () => {
+  
+  const handleVerifyOtp = () => {
     axios
-      .post(
-        "https://ecommerceapi-wpz8.onrender.com/api/v1/auth/otpVerify",
-        otp
-      )
+      .post("http://localhost:3000/api/v1/auth/otpVerify",{
+        email: registrationData.email, 
+        otp: otp
+      })
       .then((data) => {
         toast.success("OTP Verified Successfully 🎉");
         setOpenOtpModal(false); // Close modal
-        navigate("/login")
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || "Invalid OTP");
+        toast.error(err);
       });
   };
-     /*Otp Varification */
- 
+  /*Otp Varification */
+
   return (
     <div className="py-12 m-auto">
       <div className="max-w-292.5 m-auto">
@@ -102,7 +103,7 @@ const Registration = () => {
             </CardDescription>
             <CardAction>
               <Link to={"/login"}>
-              <Button variant="link">Login</Button>
+                <Button variant="link">Login</Button>
               </Link>
             </CardAction>
           </CardHeader>
@@ -152,39 +153,37 @@ const Registration = () => {
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button type="button" onClick={handleRegBtn} className="w-full">
-              Login
+              Signup
             </Button>
           </CardFooter>
         </Card>
-      
-      
-      {/* OTP Modal */}
-      <Dialog open={openOtpModal} onOpenChange={setOpenOtpModal}>
-        <DialogContent className="sm:max-w-[425px] text-center">
-          <DialogHeader>
-            <DialogTitle>OTP Verification</DialogTitle>
-            <DialogDescription>
-              Enter the OTP & sent to the email: {registrationData.email}
-            </DialogDescription>
-          </DialogHeader>
-          {openOtpModal &&(
-          <div className="space-y-4">
-          
-            <div>
-                <Input
-                name="otp"
-                onChange={handleOtpChange}
-                placeholder="Enter Your OTP"
-              />
-            </div>
-            <Button onClick={handleVerifyOtp} className="w-full">
-              Verify OTP
-            </Button>
-          </div>
-         )}
-        </DialogContent>
-      </Dialog>
-      
+
+        {/* OTP Modal */}
+        <Dialog open={openOtpModal} onOpenChange={setOpenOtpModal}>
+          <DialogContent className="sm:max-w-[425px] text-center">
+            <DialogHeader>
+              <DialogTitle>OTP Verification</DialogTitle>
+              <DialogDescription>
+                Enter the OTP & sent to the email: {registrationData.email}
+              </DialogDescription>
+            </DialogHeader>
+            {openOtpModal && (
+              <div className="space-y-4">
+                <div>
+                  <Input
+                  type={"number"}
+                    value= {otp}
+                    onChange={(e)=>setOtp(e.target.value)}
+                    placeholder="Enter Your OTP"
+                  />
+                </div>
+                <Button onClick={handleVerifyOtp} className="w-full">
+                  Verify OTP
+                </Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

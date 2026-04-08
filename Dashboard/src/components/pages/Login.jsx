@@ -33,19 +33,18 @@ const Login = () => {
   const handleLoginBtn = async () => {
     try {
       const res = await axios.post(
-        "https://ecommerceapi-wpz8.onrender.com/api/v1/auth/login",
+        "http://localhost:3000/api/v1/auth/login",
         loginData,
-        { withCredentials: true }
       );
       if (res.data.success === true) {
-        toast.success(res.data.message, {duration: 2000});
+         toast.success("Login Successfully");
         setTimeout(() => {
           navigate("/")
           
         },800);
     
       } else {
-        toast.error(res.data.message);
+        toast.error("Invalid Email and Password");
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Login Failed");

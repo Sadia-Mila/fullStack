@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    axios.get("https://ecommerceapi-wpz8.onrender.com/api/v1/product/allproductList").then(
+    axios.get("http://localhost:3000/api/v1/product/allproductList").then(
       (res) => setProducts(res.data.data),
       // console.log(res.data.data)
     );
@@ -27,7 +27,7 @@ const ProductList = () => {
   const handleProductDelete = async (id) => {
     try {
       await axios.delete(
-        `https://ecommerceapi-wpz8.onrender.com/api/v1/product/singleproductdelete/${id}`,
+        `http://localhost:3000/api/v1/product/singleproductdelete/${id}`,
       );
 
       setProducts((prevProducts) =>

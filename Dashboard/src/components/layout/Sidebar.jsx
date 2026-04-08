@@ -6,6 +6,8 @@ import {
   Package,
   ShoppingCart,
   ChevronDown,
+  User,
+  PartyPopper,
 } from "lucide-react";
 
 import {
@@ -17,6 +19,7 @@ import {
 const Sidebar = () => {
    const [openCategory, setOpenCategory] = useState(false);
    const [openProducts, setOpenProducts] = useState(false);
+   const [openUser, setOpenUser] = useState(false);
 
   return (
     <div className="w-64 border-r bg-background p-4 space-y-4">
@@ -31,7 +34,7 @@ const Sidebar = () => {
         <Collapsible open={openCategory} onOpenChange={setOpenCategory}>
           <CollapsibleTrigger className="flex justify-between items-center w-full">
             <div className="flex gap-2 items-center">
-              <Layers size={18} />
+              <PartyPopper size={18} />
               Category
             </div>
             <ChevronDown
@@ -68,6 +71,29 @@ const Sidebar = () => {
             <Link to="/product/List">Product List</Link>
           </CollapsibleContent>
         </Collapsible>
+
+
+        {/* ===================== */}
+         <Collapsible open={openUser} onOpenChange={setOpenUser}>
+          <CollapsibleTrigger className="flex justify-between items-center w-full">
+            <div className="flex gap-2 items-center">
+              <User size={18} />
+              Users
+            </div>
+            <ChevronDown
+              size={16}
+              className={`transition-transform ${
+                openUser ? "rotate-180" : ""
+              }`}
+            />
+          </CollapsibleTrigger>
+
+          <CollapsibleContent className="ml-6 mt-2 flex flex-col gap-2 text-sm">
+              <Link to="/user/List">User List</Link>
+          </CollapsibleContent>
+        </Collapsible>
+         
+       
 
         {/* <Link to="/products" className="flex gap-2 items-center">
           <Package size={18} /> Add Products

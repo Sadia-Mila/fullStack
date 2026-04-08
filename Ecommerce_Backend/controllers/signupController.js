@@ -62,4 +62,12 @@ async function signupController(req, res) {
   });
 }
 
-module.exports = signupController;
+async function getAllUser(req, res) {
+  const userList = await userSchema.find({});
+  res.json({
+    message: "User List",
+    data: userList,
+  });
+}
+
+module.exports = {signupController, getAllUser};
