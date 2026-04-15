@@ -24,7 +24,7 @@ async function otpController(req, res) {
   user.expireOtp = undefined;
   await user.save();
   res.status(200).json({
-    message: "Email varification Done",
+    message: "Email verification Done",
   });
 }
 

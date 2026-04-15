@@ -25,10 +25,12 @@ async function loginController(req, res) {
     bcrypt.compare(password, existingUser.password, function (err, result) {
       if (result) {
         req.session.isAuth = true;
-        req.session.userSchema = {
+        req.session.user = {
           id: existingUser.id,
           email: existingUser.email,
           firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          profileImage: existingUser.profileImage,
         };
         return res.json({ success: true, message: "Login Done Successfully" });
       } else {
@@ -49,8 +51,28 @@ function logOutController(req, res) {
   });
 }
 
+
+
 function dashboardController(req, res) {
   res.json({ message: "Wel Come to Dashboard" });
 }
 
-module.exports = { loginController, logOutController, dashboardController };
+//current user controller
+function currentuserController(req, res) {
+  if (!req.session.user) {
+    return res.status(401).json({
+      success: false,
+      message: "No user",
+    });
+  }
+  console.log(req.session.user);
+  
+
+  res.json({
+    success: true,
+    user: req.session.user,
+  });
+}
+//current user controller
+
+module.exports = { loginController, logOutController, dashboardController, currentuserController };

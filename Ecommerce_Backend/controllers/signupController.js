@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const emailVarification = require("../helpers/emailVarification");
 
+
 async function signupController(req, res) {
   const { firstName, lastName, email, password } = req.body;
 
@@ -44,6 +45,7 @@ async function signupController(req, res) {
 
   const expireOtp = new Date(Date.now() + 10 * 60 * 1000);
 
+  
   bcrypt.hash(password, 10, function (err, hash) {
     const user = new userSchema({
       firstName,
@@ -52,6 +54,7 @@ async function signupController(req, res) {
       password: hash,
       otp,
       expireOtp,
+     
       
     });
     emailVarification(email, otp);

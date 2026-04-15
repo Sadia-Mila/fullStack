@@ -31,23 +31,24 @@ const Login = () => {
   };
 
   const handleLoginBtn = async () => {
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/login",
-        loginData,
-      );
-      if (res.data.success === true) {
-         toast.success("Login Successfully");
-        setTimeout(() => {
-          navigate("/")
-          
-        },800);
-    
-      } else {
-        toast.error("Invalid Email and Password");
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Login Failed");
+    const res = await axios.post(
+      "http://localhost:3000/api/v1/auth/login",
+      loginData,
+      {
+        withCredentials: true,
+      },
+    );
+    if (!loginData.email || !loginData.password) {
+      return toast.error("All fields are required");
+    }
+
+    if (res.data.success === true) {
+      toast.success("Login Successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 800);
+    } else {
+      toast.error(res.data.message || "Invalid Email and Password");
     }
   };
 
@@ -92,7 +93,7 @@ const Login = () => {
               </form>
             </CardContent>
             <CardFooter className="flex-col gap-2">
-              <Button className="w-full" onClick={handleLoginBtn}>
+              <Button type="submit" className="w-full" onClick={handleLoginBtn}>
                 Login
               </Button>
             </CardFooter>

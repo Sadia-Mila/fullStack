@@ -20,9 +20,8 @@ const ProductList = () => {
       (res) => setProducts(res.data.data),
       // console.log(res.data.data)
     );
-  }, []);
-  // console.log(categories);
-
+  }, [products]);
+ 
   //Product Delete
   const handleProductDelete = async (id) => {
     try {

@@ -38,15 +38,15 @@ const Registration = () => {
   const [openOtpModal, setOpenOtpModal] = useState(false);
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+  /* OTP Modal */
+ 
 
-  
-    /* OTP Modal */
-  
   const [registrationData, setRegistrationData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
+   
   });
   const handleChange = (e) => {
     setRegistrationData({
@@ -57,10 +57,7 @@ const Registration = () => {
 
   const handleRegBtn = () => {
     axios
-      .post(
-        "http://localhost:3000/api/v1/auth/signup",
-        registrationData
-      )
+      .post("http://localhost:3000/api/v1/auth/signup", registrationData)
       .then((data) => {
         toast.success("Registration Done Successfully. Now Verify Otp");
         setOtp({ ...otp, email: registrationData.email });
@@ -71,12 +68,12 @@ const Registration = () => {
       });
   };
   /*Otp Varification */
-  
+
   const handleVerifyOtp = () => {
     axios
-      .post("http://localhost:3000/api/v1/auth/otpVerify",{
-        email: registrationData.email, 
-        otp: otp
+      .post("http://localhost:3000/api/v1/auth/otpVerify", {
+        email: registrationData.email,
+        otp: otp,
       })
       .then((data) => {
         toast.success("OTP Verified Successfully 🎉");
@@ -148,6 +145,7 @@ const Registration = () => {
                     placeholder="Enter Your Password"
                   />
                 </div>
+               
               </div>
             </form>
           </CardContent>
@@ -171,9 +169,9 @@ const Registration = () => {
               <div className="space-y-4">
                 <div>
                   <Input
-                  type={"number"}
-                    value= {otp}
-                    onChange={(e)=>setOtp(e.target.value)}
+                    type={"number"}
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
                     placeholder="Enter Your OTP"
                   />
                 </div>
