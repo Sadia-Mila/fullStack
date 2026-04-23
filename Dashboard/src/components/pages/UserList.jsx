@@ -54,8 +54,9 @@ const UserList = () => {
               <TableRow key={item._id}>
                 <TableCell>{index + 1}</TableCell>
 
-                <TableCell className="font-medium">
+                <TableCell className="font-medium capitalize">
                   {item.firstName} {item.lastName}
+                  <TableCell>Id: {item._id}</TableCell>
                 </TableCell>
 
                 <TableCell>{item.email}</TableCell>

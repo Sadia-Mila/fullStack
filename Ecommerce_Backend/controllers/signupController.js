@@ -8,7 +8,8 @@ const emailVarification = require("../helpers/emailVarification");
 
 
 async function signupController(req, res) {
-  const { firstName, lastName, email, password } = req.body;
+  try {
+    const { firstName, lastName, email, password } = req.body;
 
   if (!firstName || !lastName) {
     return res.json({
@@ -30,23 +31,25 @@ async function signupController(req, res) {
       message: "Error: Email format is not valid",
     });
   }
+      // Check duplicate
+   const existingUser = await userSchema.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
 
-  const duplicateEmail = await userSchema.find({ email });
-  // console.log(duplicateEmail);
-
-  if (duplicateEmail.length> 0) {
-    return res.json({
-      message: "Duplicate Email",
-    });
-  }
-
+    // Generate OTP
   const otp = crypto.randomInt(100000, 999999).toString();
   // console.log("Data sent with otp");
 
   const expireOtp = new Date(Date.now() + 10 * 60 * 1000);
 
-  
+      //Hash password
   bcrypt.hash(password, 10, function (err, hash) {
+
+    // Create user
     const user = new userSchema({
       firstName,
       lastName,
@@ -57,12 +60,36 @@ async function signupController(req, res) {
      
       
     });
+     //Send OTP email
     emailVarification(email, otp);
+   
+    //Save user
     user.save();
     res.json({
       message: "Data Send",
     });
+    
+   
+    
   });
+    
+  } catch (error) {
+     // ✅ Handle duplicate index error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+
+    
+  }
+  
 }
 
 async function getAllUser(req, res) {

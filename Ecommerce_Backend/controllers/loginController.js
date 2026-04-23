@@ -5,10 +5,10 @@ const bcrypt = require("bcrypt");
 async function loginController(req, res) {
   const { email, password } = req.body;
   if (!email) {
-    return res.json({success: false,  message: "Email is required" });
+    return res.json({ success: false, message: "Email is required" });
   }
   if (!password) {
-    return res.json({ success: false,  message: "Password is required" });
+    return res.json({ success: false, message: "Password is required" });
   }
   if (!emailValidation(email)) {
     return res.json({ success: false, message: "Email format is not valid" });
@@ -17,7 +17,7 @@ async function loginController(req, res) {
   const existingUser = await userSchema.findOne({ email });
 
   if (!existingUser) {
-    return res.json({ success: false,  message: "user is not found in DB" });
+    return res.json({ success: false, message: "user is not found in DB" });
   }
   if (!existingUser.isVerified) {
     return res.json({ success: false, message: "user is not verified" });
@@ -51,8 +51,6 @@ function logOutController(req, res) {
   });
 }
 
-
-
 function dashboardController(req, res) {
   res.json({ message: "Wel Come to Dashboard" });
 }
@@ -65,8 +63,6 @@ function currentuserController(req, res) {
       message: "No user",
     });
   }
-  console.log(req.session.user);
-  
 
   res.json({
     success: true,
@@ -75,4 +71,31 @@ function currentuserController(req, res) {
 }
 //current user controller
 
-module.exports = { loginController, logOutController, dashboardController, currentuserController };
+//priviate route controller
+async function privateroute(req, res) {
+  if (!req.session.user) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+
+  const finduser = await userSchema.findOne({
+    email: req.session.user.email,
+  });
+
+  res.json({
+    success: true,
+    data: finduser,
+  });
+}
+
+//priviate route
+
+module.exports = {
+  loginController,
+  logOutController,
+  dashboardController,
+  currentuserController,
+  privateroute,
+};

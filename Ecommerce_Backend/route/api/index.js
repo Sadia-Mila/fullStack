@@ -11,4 +11,5 @@ router.use("/category", categoryRoute)
 router.use("/subcategory", subCatagoryRoute)
 router.use("/product", productRoute)
 
+
 module.exports = router
