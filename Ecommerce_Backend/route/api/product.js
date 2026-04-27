@@ -1,7 +1,7 @@
 const express = require('express')
 const multer  = require('multer')
 // const upload = multer({ dest: 'uploads/' })
-const {productController, getAllProduct, updateProduct, singleproductdelete, deleteAllProduct} = require('../../controllers/productController')
+const {productController, getAllProduct, updateProduct, singleproduct, singleproductdelete, deleteAllProduct} = require('../../controllers/productController')
 const router = express.Router()
 
 const storage = multer.diskStorage({
@@ -19,6 +19,7 @@ const upload = multer({ storage: storage })
 router.post("/createproduct", upload.single('image'), productController)
 router.get("/allproductList", getAllProduct)
 router.patch("/updateproduct/:id", updateProduct)
+router.get("/singleproduct/:id", singleproduct)
 router.delete("/singleproductdelete/:id", singleproductdelete)
 router.delete("/allproductdelete", deleteAllProduct)
 

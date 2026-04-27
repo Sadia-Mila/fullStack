@@ -16,17 +16,20 @@ import { Link } from "react-router-dom";
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    axios.get("https://ecommerceapi-wpz8.onrender.com/api/v1/category/allcategorylist").then(
-      (res) => setCategories(res.data.data),
-      // console.log(res.data.data)
-    );
+    axios
+      .get(
+        "http://localhost:3000/api/v1/category/allcategorylist",
+      )
+      .then((res) => setCategories(res.data.data));
   }, []);
   // console.log(categories);
 
-  const handleCategoryListDelete =(id)=>{
-    axios.delete(`https://ecommerceapi-wpz8.onrender.com/api/v1/category/deletecategory/${id}`)
-    setCategories(categories.filter((item) => item._id !== id))
-  }
+  const handleCategoryListDelete = (id) => {
+    axios.delete(
+      `http://localhost:3000/api/v1/category/deletecategory/${id}`,
+    );
+    setCategories(categories.filter((item) => item._id !== id));
+  };
 
   return (
     <>
@@ -59,7 +62,11 @@ const CategoryList = () => {
                       </Button>
                     </Link>
                     <Link to={`/category/delete/${item._id}`}>
-                      <Button size="sm" variant="destructive" onClick={(e)=>handleCategoryListDelete(item._id)}>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={(e) => handleCategoryListDelete(item._id)}
+                      >
                         Delete
                       </Button>
                     </Link>

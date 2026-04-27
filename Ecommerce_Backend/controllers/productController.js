@@ -16,11 +16,11 @@ async function productController(req, res) {
 
   // ==========================
   // console.log(req.file.path);
-  
-    const imgPath = req.file.path
-    // console.log(imgPath);
-    const imgUrl = await uploadImage(imgPath)
-    
+
+  const imgPath = req.file.path;
+  // console.log(imgPath);
+  const imgUrl = await uploadImage(imgPath);
+
   // ==========================
   const createproduct = productSchema({
     name,
@@ -78,6 +78,14 @@ async function updateProduct(req, res) {
     data: updateProduct,
   });
 }
+async function singleproduct(req, res) {
+  const { id } = req.params;
+  const singleProduct = await productSchema.findById(id);
+  res.json({
+    message: "Single Product",
+    data: singleProduct,
+  });
+}
 
 async function singleproductdelete(req, res) {
   const { id } = req.params;
@@ -100,6 +108,7 @@ module.exports = {
   productController,
   getAllProduct,
   updateProduct,
+  singleproduct,
   singleproductdelete,
   deleteAllProduct,
 };
