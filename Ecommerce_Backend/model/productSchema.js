@@ -24,15 +24,19 @@ const productSchema = new Schema({
   category:{
     type: String, 
   },
-  image:{
+  thumbnailImage:{
     type: String, 
   },
+  galleryImage:[{
+    type: String, 
+  }],
   ram:{
     type: String, 
   },
   storage:{
     type: String, 
   },
+
 },
 {timestamps : true,
 
