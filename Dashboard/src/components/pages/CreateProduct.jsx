@@ -23,6 +23,7 @@ const CreateProduct = () => {
   const [category, setCategory] = useState("");
   const [ram, setRam] = useState("");
   const [storage, setStorage] = useState("");
+  const [badge, setBadge] = useState("");
   const [image, setImage] = useState(null);
   const handleProductBtn = () => {
     const formData = new FormData();
@@ -35,6 +36,7 @@ const CreateProduct = () => {
     formData.append("category", selectCategory);
     formData.append("ram", ram);
     formData.append("storage", storage);
+    formData.append("badge", badge);
     formData.append("image", image);
 
     axios
@@ -51,6 +53,7 @@ const CreateProduct = () => {
     setCategory("");
     setRam("");
     setStorage("");
+    setBadge("");
   };
 
   //Get Category List
@@ -62,10 +65,9 @@ const CreateProduct = () => {
       .get("http://localhost:3000/api/v1/category/allcategorylist")
       .then((res) => {
         setCategories(res.data.data);
-        if(res.data.data.length > 0) {
+        if (res.data.data.length > 0) {
           setSelectCategory(res.data.data[0].name);
           console.log(res.data.data[0].name);
-          
         }
       });
   }, []);
@@ -118,24 +120,11 @@ const CreateProduct = () => {
           </Field>
           <Field>
             <FieldLabel>Category</FieldLabel>
-            {/* <Select>
-              <SelectTrigger>
-                <SelectValue  value={category}
-              onChange={(e) => setCategory(e.target.value)}placeholder="Select Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((item) => (
-                  <SelectItem key={item._id} value={item._id}>
-                    {item.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select> */}
             <Select onValueChange={(value) => setSelectCategory(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
-              
+
               <SelectContent>
                 {categories.map((item) => (
                   <SelectItem key={item._id} value={item.name}>
@@ -144,12 +133,6 @@ const CreateProduct = () => {
                 ))}
               </SelectContent>
             </Select>
-            {/* <select onChange={selectCategory}>
-              {categories.map((item) => (
-                <option key={item._id} value={item._id}>{item.name}</option>
-                  
-                ))}
-            </select> */}
           </Field>
           <Field>
             <FieldLabel>Ram</FieldLabel>
@@ -174,7 +157,7 @@ const CreateProduct = () => {
               type={"file"}
               accept="image/*"
               placeholder="Image"
-              />
+            />
           </Field>
           <Field>
             <Button onClick={handleProductBtn}>Add Product</Button>

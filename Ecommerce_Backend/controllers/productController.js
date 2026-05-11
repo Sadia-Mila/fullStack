@@ -5,41 +5,80 @@ async function productController(req, res) {
   const {
     name,
     description,
-    price,
-    size,
-    color,
     category,
-    image,
-    ram,
-    storage,
+    variants,
   } = req.body;
 
   // ==========================
-  // console.log(req.file.path);
+  //  image update
+ if (!req.file) {
+      return res.status(400).json({ message: "Image required" });
+    }
 
-  const imgPath = req.file.path;
-  // console.log(imgPath);
-  const imgUrl = await uploadImage(imgPath);
-
+    const imgPath = req.file.path;
+    const imgUrl = await uploadImage(imgPath);
   // ==========================
-  const createproduct = productSchema({
+  // variants code
+  const imageUrls = [];
+
+  const parseVariants = JSON.parse(variants);
+
+  if (!parseVariants.length) {
+    return res.status(400).json({
+      message: "At least one variant is required",
+    });
+  }
+
+  for (let i = 0; i < parseVariants.length; i++) {
+    const v = parseVariants[i];
+
+    if (!v.price) {
+      return res.status(400).json({
+        field: `variants[${i}].price`,
+        message: "Price is required",
+      });
+    }
+
+    if (!v.stock || v.stock < 1) {
+      return res.status(400).json({
+        field: `variants[${i}].stock`,
+        message: "Stock must be at least 1",
+      });
+    }
+  }
+
+  if (!req.files || req.files.length === 0) {
+    res.status(400).json({ message: "Image is required" });
+  }
+
+  for (let file of req.files) {
+    const uploaded = await uploadImage(file.path);
+    imageUrls.push(uploaded.secure_url);
+  }
+
+  if (imageUrls.length !== parseVariants.length) {
+    return res
+      .status(400)
+      .json({ message: "Each variant must have one image." });
+  }
+
+  parseVariants.forEach((variant, index) => {
+    variant.images = [imageUrls[index]];
+  });
+
+  // variant code
+  
+  const createproduct = new productSchema({
     name,
     description,
-    price,
-    size,
-    color,
     category,
-    image: imgUrl.secure_url,
-    // image: `http://localhost:3000/uploads/${req.file.filename}`,
-    ram,
-
-    storage,
+    variants,
   });
-  (await createproduct.save(),
+  await createproduct.save();
     res.json({
       message: "Product Added",
       data: createproduct,
-    }));
+    });
 }
 
 async function getAllProduct(req, res) {
@@ -61,18 +100,29 @@ async function updateProduct(req, res) {
     category,
     ram,
     storage,
-    timestamps,
+    badge,
+   
   } = req.body;
-  const updateProduct = await productSchema.findById(id);
-  updateProduct.name = name;
-  updateProduct.description = description;
-  updateProduct.price = price;
-  updateProduct.size = size;
-  updateProduct.color = color;
-  updateProduct.category = category;
-  updateProduct.ram = ram;
-  updateProduct.storage = storage;
-  await updateProduct.save();
+  const product = await productSchema.findById(id);
+  
+  // text fields update
+  product.name = req.body.name || product.name;
+  product.description = req.body.description || product.description;
+  product.price = req.body.price || product.price;
+  product.size = req.body.size || product.size;
+  product.color = req.body.color || product.color;
+  product.category = req.body.category || product.category;
+  product.ram = req.body.ram || product.ram;
+  product.storage = req.body.storage || product.storage;
+
+  // ✅ IMAGE UPDATE 
+    if (req.file) {
+      const imgPath = req.file.path;
+      const imgUrl = await uploadImage(imgPath);
+      product.thumbnailImage = imgUrl.secure_url;
+    }
+
+  await product.save();
   res.json({
     message: "Product is updated",
     data: updateProduct,

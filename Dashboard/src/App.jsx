@@ -13,6 +13,7 @@ import Registration from "./components/pages/Registration";
 import Login from "./components/pages/Login";
 import UserList from "./components/pages/UserList";
 
+
 function App() {
   return (
     <>
@@ -27,9 +28,8 @@ function App() {
           </Route>
           <Route path="/product">
             <Route path="create" element={<CreateProduct />} />
-            <Route path="list" element={<ProductList />} />
-            {/* <Route path="update/:id" element={<UpdateCategory />} />
-            <Route path="delete/:id" element={<DeleteCategory />} /> */}
+            <Route path="list" element={<ProductList />} />          
+          
           </Route>
           <Route path="/user">
             <Route path="list" element={<UserList/>} />
